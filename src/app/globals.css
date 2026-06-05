@@ -1,0 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Barlow+Condensed:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design Tokens ─────────────────────────────────────── */
+:root {
+  --bg-void:      #020509;
+  --bg-deep:      #060c1c;
+  --bg-dark:      #09112a;
+  --bg-card:      rgba(8, 16, 38, 0.85);
+  --bg-card-hover:rgba(10, 22, 52, 0.95);
+
+  --blue-core:    #1a6bff;
+  --blue-bright:  #2288ff;
+  --blue-dim:     #0a3a99;
+  --cyan-accent:  #00d0f0;
+  --cyan-bright:  #00f0ff;
+  --cyan-dim:     #006688;
+
+  --text-bright:  #d8eaff;
+  --text-body:    #8bacc8;
+  --text-muted:   #3d5570;
+
+  --border-faint: rgba(0, 160, 220, 0.12);
+  --border-dim:   rgba(0, 180, 255, 0.25);
+  --border-glow:  rgba(0, 220, 255, 0.55);
+
+  --glow-blue:    0 0 20px rgba(0, 140, 255, 0.35);
+  --glow-cyan:    0 0 25px rgba(0, 220, 255, 0.4);
+  --glow-lg:      0 0 60px rgba(0, 120, 255, 0.25), 0 0 120px rgba(0, 80, 200, 0.15);
+}
+
+/* ── Base ───────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg-void);
+  color: var(--text-bright);
+  font-family: 'Barlow', sans-serif;
+  font-weight: 400;
+  overflow-x: hidden;
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text-bright);
+}
+
+/* ── Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-void); }
+::-webkit-scrollbar-thumb { background: var(--blue-dim); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--blue-core); }
+
+/* ── Utility classes ─────────────────────────────────────── */
+@layer components {
+  /* Glass card */
+  .glass-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-dim);
+    border-radius: 4px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,180,255,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .glass-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-glow);
+    box-shadow: var(--glow-blue);
+    transform: translateY(-2px);
+  }
+
+  /* Glow button */
+  .btn-glow {
+    background: linear-gradient(135deg, var(--blue-core), var(--blue-bright));
+    color: white;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.5rem;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .btn-glow:hover {
+    box-shadow: var(--glow-blue), 0 4px 16px rgba(0,100,255,0.4);
+    transform: translateY(-1px);
+  }
+  .btn-glow:hover::after { opacity: 1; }
+
+  /* Section heading */
+  .section-heading {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-block;
+  }
+
+  .section-heading::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cyan-accent), transparent);
+    box-shadow: var(--glow-cyan);
+  }
+
+  /* Tag / badge */
+  .tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--border-dim);
+    border-radius: 2px;
+    color: var(--cyan-accent);
+    background: rgba(0, 180, 220, 0.08);
+  }
+
+  /* Diagonal divider */
+  .diagonal-divider {
+    position: relative;
+  }
+  .diagonal-divider::after {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    left: -5%;
+    width: 110%;
+    height: 80px;
+    background: var(--bg-void);
+    clip-path: polygon(0 0, 100% 60%, 100% 100%, 0 100%);
+    z-index: 1;
+  }
+
+  /* Grid dot pattern overlay */
+  .dot-grid {
+    background-image:
+      radial-gradient(circle, rgba(0, 160, 220, 0.12) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Glowing horizontal rule */
+  .glow-rule {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-glow), transparent);
+    box-shadow: 0 0 8px rgba(0, 210, 255, 0.4);
+  }
+
+  /* Scan-line hover effect */
+  .scan-hover {
+    position: relative;
+    overflow: hidden;
+  }
+  .scan-hover::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(0deg, transparent, rgba(0, 180, 255, 0.08), transparent);
+    top: -60px;
+    transition: none;
+    pointer-events: none;
+  }
+  .scan-hover:hover::after {
+    animation: scanLine 1.5s linear infinite;
+  }
+}
+
+/* ── Animations ──────────────────────────────────────────── */
+@keyframes scanLine {
+  0%   { top: -60px; }
+  100% { top: 110%; }
+}
+
+@keyframes bubbleRise {
+  0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+  8%   { opacity: 0.5; }
+  88%  { opacity: 0.25; }
+  100% { transform: translateY(-15vh) scale(1); opacity: 0; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 8px rgba(0, 180, 255, 0.2); }
+  50%       { box-shadow: 0 0 30px rgba(0, 180, 255, 0.55), 0 0 60px rgba(0, 100, 255, 0.2); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes drawBar {
+  from { width: 0; }
+  to   { width: var(--bar-width, 0%); }
+}
+
+/* ── Observe-based fade in ───────────────────────────────── */
+.fade-in-ready {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-in-ready.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Admin overrides ─────────────────────────────────────── */
+.admin-body {
+  background: #f1f5f9;
+  color: #1e293b;
+  font-family: 'Barlow', sans-serif;
+}
