@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>NEON WULIN: CYBER RUMBLE</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0416'/%3E%3Ctext x='50' y='68' font-size='60' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <div id="canvas-container"></div>
+
+  <div id="hud-overlay">
+    <div class="hud-row" id="enemy-hud"></div>
+    <div id="wave-banner"></div>
+    <div id="action-panel">
+      <div id="battle-log"></div>
+      <div id="turn-prompt"></div>
+      <div id="action-buttons"></div>
+      <div id="target-buttons"></div>
+    </div>
+    <div class="hud-row" id="party-hud"></div>
+  </div>
+
+  <button id="help-btn" class="btn btn-pink help-toggle-btn" title="Elemental wheel reference">?</button>
+
+  <div id="title-screen" class="screen">
+    <h1 class="game-title">NEON WULIN<br>CYBER RUMBLE</h1>
+    <div class="game-subtitle">A TURN-BASED PARTY SKIRMISH</div>
+    <div id="legend-title" class="legend"></div>
+    <div class="menu-row">
+      <button id="start-btn" class="btn btn-cyan">START MISSION</button>
+    </div>
+  </div>
+
+  <div id="end-screen" class="screen hidden">
+    <h1 class="game-title">MISSION CLEAR</h1>
+    <p style="max-width:520px;font-family:'Segoe UI',Arial,sans-serif;font-weight:normal;opacity:0.9;"></p>
+    <div class="menu-row">
+      <button id="restart-btn" class="btn btn-cyan">RUN IT BACK</button>
+    </div>
+  </div>
+
+  <div id="help-overlay" class="screen hidden" style="z-index:70;">
+    <h1 class="game-title" style="font-size:2rem;">ELEMENTAL WHEEL</h1>
+    <div id="legend-help" class="legend"></div>
+    <p style="max-width:640px;font-family:'Segoe UI',Arial,sans-serif;font-weight:normal;opacity:0.85;font-size:0.85rem;">
+      Strong hits deal 2x damage. Weak hits deal 0.5x. Nurturing hits (e.g. Water &rarr; Wood) deal neutral damage but
+      charge the target's next attack with a huge boost and a unique side effect &mdash; you can even strike your own
+      allies to trigger it on purpose!
+    </p>
+    <div class="menu-row">
+      <button id="help-close-btn" class="btn btn-pink">CLOSE</button>
+    </div>
+  </div>
+
+  <div class="credit">NEON WULIN: CYBER RUMBLE — runs 100% client-side, no server required</div>
+</div>
+
+<script src="js/vendor_three.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/battle.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
