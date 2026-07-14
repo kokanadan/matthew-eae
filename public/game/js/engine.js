@@ -45,8 +45,8 @@
   }
 
   function addOutline(mesh, factor) {
-    var outline = new THREE.Mesh(mesh.geometry, new THREE.MeshBasicMaterial({ color: 0x0a0a14, side: THREE.BackSide }));
-    outline.scale.setScalar(factor || 1.08);
+    var outline = new THREE.Mesh(mesh.geometry, new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.BackSide }));
+    outline.scale.setScalar(factor || 1.16);
     mesh.add(outline);
     return outline;
   }
@@ -105,44 +105,49 @@
 
   function buildHair(build, color) {
     var g = new THREE.Group();
+    // NOTE: head sphere radius is 0.62 — every piece here must clear that
+    // radius (or be a larger shell sphere at the same center) or it renders
+    // fully hidden inside the opaque head.
     switch (build.hair) {
       case "ponytailFin":
-        g.add(box(1.0, 0.32, 1.02, color, { outlineScale: 1.1 }));
-        var tail = cone(0.22, 0.9, color);
+        var band = box(1.0, 0.3, 1.0, color, { outlineScale: 1.18 });
+        band.position.set(0, 0.46, 0);
+        g.add(band);
+        var tail = cone(0.24, 0.95, color);
         tail.rotation.x = Math.PI * 0.55;
-        tail.position.set(0, -0.05, -0.55);
+        tail.position.set(0, 0.4, -0.62);
         g.add(tail);
         break;
       case "leafCrown":
-        for (var i = 0; i < 5; i++) {
-          var leaf = cone(0.16, 0.42, color);
-          var a = (i / 5) * Math.PI * 2;
-          leaf.position.set(Math.cos(a) * 0.34, 0.22, Math.sin(a) * 0.34);
-          leaf.rotation.z = Math.cos(a) * 0.4;
-          leaf.rotation.x = Math.sin(a) * 0.4;
+        for (var i = 0; i < 6; i++) {
+          var leaf = cone(0.18, 0.46, color);
+          var a = (i / 6) * Math.PI * 2;
+          leaf.position.set(Math.cos(a) * 0.4, 0.58, Math.sin(a) * 0.4);
+          leaf.rotation.z = Math.cos(a) * 0.5;
+          leaf.rotation.x = Math.sin(a) * 0.5;
           g.add(leaf);
         }
         break;
       case "mohawk":
-        var spike = box(0.16, 0.62, 0.86, color);
-        spike.position.set(0, 0.42, 0);
+        var spike = box(0.18, 0.66, 0.9, color);
+        spike.position.set(0, 0.78, 0);
         g.add(spike);
         break;
       case "buzz":
-        g.add(sphere(0.58, color, { outlineScale: 1.05 }));
+        g.add(sphere(0.7, color, { outlineScale: 1.12 }));
         break;
       case "sleekBob":
-        var cap = sphere(0.6, color, { outlineScale: 1.06 });
-        cap.scale.set(1, 0.85, 1.1);
-        cap.position.y = 0.02;
+        var cap = sphere(0.72, color, { outlineScale: 1.1 });
+        cap.scale.set(1, 0.9, 1.08);
+        cap.position.y = 0.04;
         g.add(cap);
         break;
       case "slickback":
-        var cap2 = sphere(0.58, color, { outlineScale: 1.05 });
-        cap2.scale.set(1, 0.8, 1.05);
+        var cap2 = sphere(0.7, color, { outlineScale: 1.1 });
+        cap2.scale.set(1, 0.85, 1.05);
         g.add(cap2);
-        var spike2 = box(0.3, 0.3, 0.5, color);
-        spike2.position.set(0, 0.1, -0.4);
+        var spike2 = box(0.32, 0.32, 0.55, color);
+        spike2.position.set(0, 0.2, -0.45);
         spike2.rotation.x = -0.4;
         g.add(spike2);
         break;
@@ -154,11 +159,11 @@
 
   function buildVisor(build, accent) {
     if (build.visor === "none") return null;
-    var w = build.visor === "band" ? 1.02 : 0.86;
-    var v = box(w, 0.16, 0.14, accent, { outline: false });
-    v.material = unlitMat(accent, { transparent: true, opacity: 0.9 });
+    var w = build.visor === "band" ? 1.04 : 0.9;
+    var v = box(w, 0.17, 0.16, accent, { outline: false });
+    v.material = unlitMat(accent, { transparent: true, opacity: 0.92 });
     if (build.visor === "shades") v.material = unlitMat("#111018");
-    v.position.set(0, 0.06, 0.5);
+    v.position.set(0, 0.07, 0.66);
     return v;
   }
 
@@ -227,8 +232,8 @@
       ring.material = unlitMat(accent, { transparent: true, opacity: 0.85 });
       ring.rotation.x = Math.PI / 2.4;
       group.add(ring);
-      var eye = sphere(0.16, "#151018", { outline: false });
-      eye.position.set(0, 0, 0.55);
+      var eye = sphere(0.2, "#151018", { outline: false });
+      eye.position.set(0, 0, 0.68);
       group.add(eye);
       group.userData.hoverBase = 2.1;
       group.position.y = group.userData.hoverBase;
@@ -281,7 +286,7 @@
 
     var pupilColor = accent;
     var face = new THREE.Mesh(new THREE.PlaneGeometry(0.95, 0.72), new THREE.MeshBasicMaterial({ map: makeFaceTexture(pupilColor), transparent: true }));
-    face.position.set(0, headY + 0.02, 0.58);
+    face.position.set(0, headY + 0.02, 0.65);
     group.add(face);
 
     var hair = buildHair(build, unit.kind === "boss" ? accent : color === "#ffffff" ? accent : shadeColor(color, -10) || color);
@@ -373,15 +378,18 @@
     scene.fog = new THREE.Fog(0x0a0416, 22, 95);
     scene.background = new THREE.Color(0x0a0416);
 
-    var hemi = new THREE.HemisphereLight(0xff8fe6, 0x201033, 0.9);
+    var hemi = new THREE.HemisphereLight(0xfff3fb, 0x2a1840, 0.65);
     scene.add(hemi);
-    var key = new THREE.DirectionalLight(0xffffff, 0.9);
+    var key = new THREE.DirectionalLight(0xffffff, 1.15);
     key.position.set(6, 14, 10);
     scene.add(key);
-    var rim1 = new THREE.PointLight(0xff2fd0, 2.2, 60);
+    var fill = new THREE.DirectionalLight(0xffffff, 0.35);
+    fill.position.set(-6, 8, 6);
+    scene.add(fill);
+    var rim1 = new THREE.PointLight(0xff2fd0, 0.9, 60);
     rim1.position.set(-14, 6, -6);
     scene.add(rim1);
-    var rim2 = new THREE.PointLight(0x00e6ff, 2.2, 60);
+    var rim2 = new THREE.PointLight(0x00e6ff, 0.9, 60);
     rim2.position.set(14, 6, 10);
     scene.add(rim2);
 
@@ -403,7 +411,7 @@
   // ------------------------------------------------------------------ layout
 
   var PARTY_POS = [
-    [-9.5, 0, 6], [-5.7, 0, 6.6], [-1.9, 0, 7], [1.9, 0, 7], [5.7, 0, 6.6], [9.5, 0, 6]
+    [-8.4, 0, 5.2], [-5.1, 0, 5.9], [-1.7, 0, 6.3], [1.7, 0, 6.3], [5.1, 0, 5.9], [8.4, 0, 5.2]
   ];
 
   function enemyPositions(count) {
@@ -445,7 +453,8 @@
 
   function spawnParty(units) {
     units.forEach(function (u, i) {
-      spawnUnit(u, PARTY_POS[i] || [0, 0, 6], Math.PI);
+      // Face the camera (not each other) so faces/expressions are always readable.
+      spawnUnit(u, PARTY_POS[i] || [0, 0, 6], 0);
     });
   }
 
@@ -497,17 +506,21 @@
     var dist = Math.min(dir.length() * 0.42, 3.2);
     dir.normalize();
     var lungeTo = a.basePos.clone().addScaledVector(dir, dist);
+    var baseRotY = a.group.rotation.y;
+    var facingRotY = Math.atan2(dir.x, dir.z);
 
     await addTween(220, function (t) {
       var e = easeOutQuad(t);
       a.group.position.lerpVectors(a.basePos, lungeTo, e);
+      a.group.rotation.y = baseRotY + (facingRotY - baseRotY) * e;
     });
     if (onImpact) onImpact();
     await wait(60);
     await addTween(260, function (t) {
       var e = easeInOutQuad(t);
       a.group.position.lerpVectors(lungeTo, a.basePos, e);
-    }, function () { a.group.position.copy(a.basePos); });
+      a.group.rotation.y = facingRotY + (baseRotY - facingRotY) * e;
+    }, function () { a.group.position.copy(a.basePos); a.group.rotation.y = baseRotY; });
   }
 
   async function playHit(uid) {
@@ -587,8 +600,8 @@
     container = containerEl;
     clock = new THREE.Clock();
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(48, container.clientWidth / container.clientHeight, 0.1, 300);
-    camera.position.set(0, 8.5, 18.5);
+    camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 300);
+    camera.position.set(0, 9.2, 20.5);
     camera.lookAt(0, 1.5, 0);
 
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
