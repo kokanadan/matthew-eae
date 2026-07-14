@@ -415,9 +415,9 @@
   ];
 
   function enemyPositions(count) {
-    if (count === 1) return [[0, 0, -3]];
-    if (count === 2) return [[-3.2, 0, -3], [3.2, 0, -3]];
-    return [[-5.2, 0, -3], [0, 0, -3.6], [5.2, 0, -3]];
+    if (count === 1) return [[0, 0, -8]];
+    if (count === 2) return [[-3.6, 0, -8], [3.6, 0, -8]];
+    return [[-6.4, 0, -8], [0, 0, -8.6], [6.4, 0, -8]];
   }
 
   function disposeGroup(group) {
@@ -601,8 +601,8 @@
     clock = new THREE.Clock();
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 300);
-    camera.position.set(0, 9.2, 20.5);
-    camera.lookAt(0, 1.5, 0);
+    camera.position.set(0, 15.5, 21);
+    camera.lookAt(0, 0.5, -2.5);
 
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
